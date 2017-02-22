@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ispConfigs describeConfig="智能服务平台参数配置文件区域">
+	<!-- <parameter key="versionPath" value="resources/versions" />
+	<parameter key="maintenancePath" value="resources/maintenance-images" /> -->
+</ispConfigs>

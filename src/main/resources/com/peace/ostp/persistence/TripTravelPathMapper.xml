@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.TripTravelPathMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.TripTravelPath" >
+    <id column="TravelID" property="travelid" jdbcType="CHAR" />
+    <result column="PositionID" property="positionid" jdbcType="VARCHAR" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TravelID, PositionID, Enabled
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from triptravelpath
+    where TravelID = #{travelid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from triptravelpath
+    where TravelID = #{travelid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.TripTravelPath" >
+    insert into triptravelpath (TravelID, PositionID, Enabled
+      )
+    values (#{travelid,jdbcType=CHAR}, #{positionid,jdbcType=VARCHAR}, #{enabled,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.TripTravelPath" >
+    insert into triptravelpath
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="travelid != null" >
+        TravelID,
+      </if>
+      <if test="positionid != null" >
+        PositionID,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="travelid != null" >
+        #{travelid,jdbcType=CHAR},
+      </if>
+      <if test="positionid != null" >
+        #{positionid,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.TripTravelPath" >
+    update triptravelpath
+    <set >
+      <if test="positionid != null" >
+        PositionID = #{positionid,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+    </set>
+    where TravelID = #{travelid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.TripTravelPath" >
+    update triptravelpath
+    set PositionID = #{positionid,jdbcType=VARCHAR},
+      Enabled = #{enabled,jdbcType=CHAR}
+    where TravelID = #{travelid,jdbcType=CHAR}
+  </update>
+</mapper>

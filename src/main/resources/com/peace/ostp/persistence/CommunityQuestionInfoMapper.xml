@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.CommunityQuestionInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.CommunityQuestionInfo" >
+    <id column="QuestionID" property="questionid" jdbcType="CHAR" />
+    <result column="QuestionTitle" property="questiontitle" jdbcType="VARCHAR" />
+    <result column="QuestionContent" property="questioncontent" jdbcType="VARCHAR" />
+    <result column="QuestionAuthor" property="questionauthor" jdbcType="VARCHAR" />
+    <result column="QuestionAttention" property="questionattention" jdbcType="VARCHAR" />
+    <result column="QuestionTime" property="questiontime" jdbcType="TIMESTAMP" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    QuestionID, QuestionTitle, QuestionContent, QuestionAuthor, QuestionAttention, QuestionTime, 
+    Enabled
+  </sql>
+  
+ <select id="selectAllEquip" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+  	select <include refid="Base_Column_List" />
+    from communityquestioninfo
+   	where QuestionID=QuestionID
+	<if test='questiontitle != null and questiontitle != ""' >
+        and QuestionTitle = #{questiontitle}
+    </if>
+	<if test='questionattention != null and questionattention != ""' >
+		and QuestionAttention = #{questionattention}
+	</if>
+	<if test='questionauthor != null and questionauthor != ""' >
+		and QuestionAuthor = #{questionauthor}	
+	</if>    
+    limit #{startNo},#{pageSize}  <!--limit ？？？？？  -->
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from communityquestioninfo
+    where QuestionID = #{questionid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from communityquestioninfo
+    where QuestionID = #{questionid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.CommunityQuestionInfo" >
+    insert into communityquestioninfo (QuestionID, QuestionTitle, QuestionContent, 
+      QuestionAuthor, QuestionAttention, QuestionTime, 
+      Enabled)
+    values (#{questionid,jdbcType=CHAR}, #{questiontitle,jdbcType=VARCHAR}, #{questioncontent,jdbcType=VARCHAR}, 
+      #{questionauthor,jdbcType=VARCHAR}, #{questionattention,jdbcType=VARCHAR}, #{questiontime,jdbcType=TIMESTAMP}, 
+      #{enabled,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.CommunityQuestionInfo" >
+    insert into communityquestioninfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="questionid != null" >
+        QuestionID,
+      </if>
+      <if test="questiontitle != null" >
+        QuestionTitle,
+      </if>
+      <if test="questioncontent != null" >
+        QuestionContent,
+      </if>
+      <if test="questionauthor != null" >
+        QuestionAuthor,
+      </if>
+      <if test="questionattention != null" >
+        QuestionAttention,
+      </if>
+      <if test="questiontime != null" >
+        QuestionTime,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="questionid != null" >
+        #{questionid,jdbcType=CHAR},
+      </if>
+      <if test="questiontitle != null" >
+        #{questiontitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questioncontent != null" >
+        #{questioncontent,jdbcType=VARCHAR},
+      </if>
+      <if test="questionauthor != null" >
+        #{questionauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="questionattention != null" >
+        #{questionattention,jdbcType=VARCHAR},
+      </if>
+      <if test="questiontime != null" >
+        #{questiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  
+    <!-- 查询总数 -->
+  <select id="selectAllQuestionsCount" resultType="int">
+	select count(QuestionID)
+	from communityquestioninfo
+  </select>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.CommunityQuestionInfo" >
+    update communityquestioninfo
+    <set >
+      <if test="questiontitle != null" >
+        QuestionTitle = #{questiontitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questioncontent != null" >
+        QuestionContent = #{questioncontent,jdbcType=VARCHAR},
+      </if>
+      <if test="questionauthor != null" >
+        QuestionAuthor = #{questionauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="questionattention != null" >
+        QuestionAttention = #{questionattention,jdbcType=VARCHAR},
+      </if>
+      <if test="questiontime != null" >
+        QuestionTime = #{questiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+    </set>
+    where QuestionID = #{questionid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.CommunityQuestionInfo" >
+    update communityquestioninfo
+    set QuestionTitle = #{questiontitle,jdbcType=VARCHAR},
+      QuestionContent = #{questioncontent,jdbcType=VARCHAR},
+      QuestionAuthor = #{questionauthor,jdbcType=VARCHAR},
+      QuestionAttention = #{questionattention,jdbcType=VARCHAR},
+      QuestionTime = #{questiontime,jdbcType=TIMESTAMP},
+      Enabled = #{enabled,jdbcType=CHAR}
+    where QuestionID = #{questionid,jdbcType=CHAR}
+  </update>
+  
+  <!--找到所有的Questions  -->
+  <select id="getAllQuestions" resultMap="BaseResultMap">
+   select 
+    <include refid="Base_Column_List" />
+    from communityquestioninfo
+  </select>
+</mapper>

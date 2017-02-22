@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.BasicInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.BasicInfo" >
+    <id column="InfoID" property="infoId" jdbcType="CHAR" />
+    <result column="Author" property="author" jdbcType="VARCHAR" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+    <result column="FirstLevelInfoTypeID" property="firstlevelinfotypeid" jdbcType="CHAR" />
+    <result column="SecondLevelInfoTypeID" property="secondlevelinfotypeid" jdbcType="CHAR" />
+    <result column="SportTypeID" property="sporttypeid" jdbcType="CHAR" />
+    <result column="CopyFrom" property="copyfrom" jdbcType="VARCHAR" />
+    <result column="KeyWords" property="keywords" jdbcType="VARCHAR" />
+    <result column="Content" property="content" jdbcType="VARCHAR" />
+    <result column="ImgUrl" property="imgurl" jdbcType="VARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+    <result column="SportTypeName" property="sporttypename" jdbcType="CHAR" />
+    <result column="FirstLevelInfoTypeName" property="firstlevelinfotypename" jdbcType="CHAR" />
+    <result column="SecondLevelInfoTypeName" property="secondlevelinfotypename" jdbcType="CHAR" />
+    <result column="beginTime" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    InfoID, Author, Title, FirstLevelInfoTypeID, SecondLevelInfoTypeID, SportTypeID, 
+    CopyFrom, KeyWords, Content, ImgUrl, CreateTime, Enabled
+  </sql>
+  <select id="selectByInfoId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    	InfoID, Author, Title, b.FirstLevelInfoTypeID, b.SecondLevelInfoTypeID, b.SportTypeID, 
+    	CopyFrom, KeyWords, Content, ImgUrl, CreateTime, Enabled, t.SportTypeName, FirstLevelInfoTypeName, SecondLevelInfoTypeName
+    
+  	from basicinfo b, basicsporttype t, infofirstleveltype f, infosecondleveltype s
+
+  	where InfoID = #{infoId,jdbcType=CHAR}
+    	and b.SportTypeID=t.SportTypeID
+   		and b.FirstLevelInfoTypeID=f.FirstLevelInfoTypeID
+    	and b.SecondLevelInfoTypeID=s.SecondLevelInfoTypeID
+  </select>
+  
+  <select id="searchByInfo" resultMap="BaseResultMap" >
+  	select
+  		bi.*,iflt.*,islt.*,bst.*
+  	from
+  		basicinfo bi, infofirstleveltype iflt,infosecondleveltype islt, basicsporttype bst
+  	<where>
+  			bi.SportTypeID = bst.SportTypeID
+  		and
+  			bi.FirstLevelInfoTypeID = iflt.FirstLevelInfoTypeID
+  		and
+  			bi.SecondLevelInfoTypeID=islt.SecondLevelInfoTypeID
+  		<if test="basicinfo.title !=null and basicinfo.title !=''">
+  			and bi.title = #{basicinfo.title,jdbcType=VARCHAR}
+  		</if>
+  		<if test="basicinfo.firstlevelinfotypeid !=null and basicinfo.firstlevelinfotypeid !=''">
+  			and bi.FirstLevelInfoTypeID = #{basicinfo.firstlevelinfotypeid,jdbcType=VARCHAR}
+  		</if>
+  		<if test="basicinfo.secondlevelinfotypeid !=null and basicinfo.secondlevelinfotypeid !=''">
+  			and bi.SecondLevelInfoTypeID = #{basicinfo.secondlevelinfotypeid,jdbcType=CHAR}
+  		</if>
+  		<if test="basicinfo.sporttypeid !=null and basicinfo.sporttypeid !=''">
+  			and bi.SportTypeID = #{basicinfo.sporttypeid,jdbcType=CHAR}
+  		</if>
+  		<if test="basicinfo.beginTime != null and basicinfo.beginTime !='' and basicinfo.endTime != null and basicinfo.endTime !=''">
+  			and bi.createtime between #{basicinfo.beginTime} and #{basicinfo.endTime}
+  		</if>
+  	</where>
+  	limit #{page.startIndex},#{page.pageSize}
+ 
+  </select>
+  
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from basicinfo
+  </select>
+  
+  <select id="getTotalRecord" resultType="int" >
+  	select  COUNT(InfoID)
+  	FROM
+  	 basicinfo bi, infofirstleveltype iflt,infosecondleveltype islt, basicsporttype bst
+  	 <where>
+  			bi.SportTypeID = bst.SportTypeID
+  		and
+  			bi.FirstLevelInfoTypeID = iflt.FirstLevelInfoTypeID
+  		and
+  			bi.SecondLevelInfoTypeID=islt.SecondLevelInfoTypeID
+  		<if test="basicinfo.title !=null and basicinfo.title !=''">
+  			and bi.title = #{basicinfo.title,jdbcType=VARCHAR}
+  		</if>
+  		<if test="basicinfo.firstlevelinfotypeid !=null and basicinfo.firstlevelinfotypeid !=''">
+  			and bi.FirstLevelInfoTypeID = #{basicinfo.firstlevelinfotypeid,jdbcType=VARCHAR}
+  		</if>
+  		<if test="basicinfo.secondlevelinfotypeid !=null and basicinfo.secondlevelinfotypeid !=''">
+  			and bi.SecondLevelInfoTypeID = #{basicinfo.secondlevelinfotypeid,jdbcType=CHAR}
+  		</if>
+  		<if test="basicinfo.sporttypeid !=null and basicinfo.sporttypeid !=''">
+  			and bi.SportTypeID = #{basicinfo.sporttypeid,jdbcType=CHAR}
+  		</if>
+  		<if test="basicinfo.beginTime != null and basicinfo.beginTime !='' and basicinfo.endTime != null and basicinfo.endTime !=''">
+  			and bi.createtime between #{basicinfo.beginTime} and #{basicinfo.endTime}
+  		</if>
+  	</where>
+  </select>
+
+  
+  <select id="getPageRecord" parameterType="java.util.Map" resultType="com.peace.ostp.domain.BasicInfo">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from basicinfo limit #{startIndex},#{pageSize};
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from basicinfo
+    where InfoID = #{infoId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.BasicInfo" >
+    insert into basicinfo (InfoID, Author, Title, 
+      FirstLevelInfoTypeID, SecondLevelInfoTypeID, 
+      SportTypeID, CopyFrom, KeyWords, 
+      Content, ImgUrl, CreateTime, 
+      Enabled)
+    values (#{infoId,jdbcType=CHAR}, #{author,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{firstlevelinfotypeid,jdbcType=CHAR}, #{secondlevelinfotypeid,jdbcType=CHAR}, 
+      #{sporttypeid,jdbcType=CHAR}, #{copyfrom,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{imgurl,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{enabled,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.BasicInfo" >
+    insert into basicinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="infoId != null" >
+        InfoID,
+      </if>
+      <if test="author != null" >
+        Author,
+      </if>
+      <if test="title != null" >
+        Title,
+      </if>
+      <if test="firstlevelinfotypeid != null" >
+        FirstLevelInfoTypeID,
+      </if>
+      <if test="secondlevelinfotypeid != null" >
+        SecondLevelInfoTypeID,
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID,
+      </if>
+      <if test="copyfrom != null" >
+        CopyFrom,
+      </if>
+      <if test="keywords != null" >
+        KeyWords,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="imgurl != null" >
+        ImgUrl,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="infoId != null" >
+        #{infoId,jdbcType=CHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="firstlevelinfotypeid != null" >
+        #{firstlevelinfotypeid,jdbcType=CHAR},
+      </if>
+      <if test="secondlevelinfotypeid != null" >
+        #{secondlevelinfotypeid,jdbcType=CHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="copyfrom != null" >
+        #{copyfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="imgurl != null" >
+        #{imgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.BasicInfo" >
+    update basicinfo
+    <set >
+      <if test="author != null" >
+        Author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="firstlevelinfotypeid != null" >
+        FirstLevelInfoTypeID = #{firstlevelinfotypeid,jdbcType=CHAR},
+      </if>
+      <if test="secondlevelinfotypeid != null" >
+        SecondLevelInfoTypeID = #{secondlevelinfotypeid,jdbcType=CHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="copyfrom != null" >
+        CopyFrom = #{copyfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        KeyWords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        Content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="imgurl != null" >
+        ImgUrl = #{imgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+    </set>
+    where InfoID = #{infoId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.BasicInfo" >
+    update basicinfo
+    set Author = #{author,jdbcType=VARCHAR},
+      Title = #{title,jdbcType=VARCHAR},
+      FirstLevelInfoTypeID = #{firstlevelinfotypeid,jdbcType=CHAR},
+      SecondLevelInfoTypeID = #{secondlevelinfotypeid,jdbcType=CHAR},
+      SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      CopyFrom = #{copyfrom,jdbcType=VARCHAR},
+      KeyWords = #{keywords,jdbcType=VARCHAR},
+      Content = #{content,jdbcType=VARCHAR},
+      ImgUrl = #{imgurl,jdbcType=VARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      Enabled = #{enabled,jdbcType=CHAR}
+    where InfoID = #{infoId,jdbcType=CHAR}
+  </update>
+</mapper>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.TripTravelInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.TripTravelInfo" >
+    <id column="TravelID" property="travelid" jdbcType="CHAR" />
+    <result column="TravelName" property="travelname" jdbcType="VARCHAR" />
+    <result column="SportTypeID" property="sporttypeid" jdbcType="CHAR" />
+    <result column="Attention" property="attention" jdbcType="VARCHAR" />
+    <result column="KeyWord" property="keyword" jdbcType="VARCHAR" />
+    <result column="TravelPicture" property="travelpicture" jdbcType="VARCHAR" />
+    <result column="Guide" property="guide" jdbcType="VARCHAR" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+    <result column="CreatTime" property="creattime" jdbcType="TIMESTAMP" />
+    <association property="basicSportType" javaType="com.peace.ostp.domain.BasicSportType">
+ 		<id property="sporttypeid" column="SportTypeID"/>
+ 		<result property="sporttypename" column="SportTypeName"/>
+ 		<result property="note" column="Note"/>
+ 	</association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TravelID, TravelName, SportTypeID, Attention, KeyWord, CreatTime, Guide,TravelPicture, Enabled
+  </sql>
+  <select id="getTripInfosList" resultMap="BaseResultMap">
+      select TravelID, TravelName, Attention, KeyWord, CreatTime, Guide, SportTypeName,TravelPicture, tti.SportTypeID
+from triptravelinfo tti, basicsporttype bstp
+      where tti.SportTypeID = bstp.SportTypeID
+  </select>
+
+  <select id="getTripInfos" resultMap="BaseResultMap">
+  	select
+  		TravelID, TravelName, Attention, KeyWord, CreatTime, Guide, SportTypeName,TravelPicture, tti.SportTypeID
+  	from
+  		triptravelinfo tti, basicsporttype bstp 
+  	<where>
+  			tti.SportTypeID = bstp.SportTypeID
+  		<if test="tripTravelInfo.travelname != null and tripTravelInfo.travelname !=''">
+  		and
+  			TravelName = #{tripTravelInfo.travelname,jdbcType=VARCHAR}
+  		</if>
+  		<if test="tripTravelInfo.sporttypeid != null and tripTravelInfo.sporttypeid !=''">
+  		and
+  			tti.SportTypeID = bstp.SportTypeID
+  		and
+  			tti.SportTypeID = #{tripTravelInfo.sporttypeid,jdbcType=CHAR}
+  		</if>
+  		<if test="tripTravelInfo.keyword != null and tripTravelInfo.keyword !=''">
+  		and
+  			KeyWord = #{keyword,jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  	limit #{page.startIndex},#{page.pageSize}
+  </select>
+  <select id="getTotalRecord" parameterType="PositionDetailInfo" resultType="int">
+  	select  COUNT(TravelID)
+  	from
+  		triptravelinfo tti, basicsporttype bstp
+  	<where>
+  			tti.SportTypeID = bstp.SportTypeID
+  		<if test="travelname != null and travelname !=''">
+  		and
+  			TravelName = #{travelname,jdbcType=VARCHAR}
+  		</if>
+  		<if test="sporttypeid != null and sporttypeid !=''">
+  		and
+  			tti.SportTypeID = bstp.SportTypeID
+  		and
+  			tti.SportTypeID = #{sporttypeid,jdbcType=CHAR}
+  		</if>
+  		<if test="keyword != null and keyword !=''">
+  		and
+  			KeyWord = #{keyword,jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  </select>
+  <select id="getTripInfoByID" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+  		TravelID, TravelName, Attention, KeyWord, CreatTime, Guide, SportTypeName, TravelPicture,tti.SportTypeID
+  	from
+  		triptravelinfo tti, basicsporttype bstp
+  	where
+  		tti.SportTypeID = bstp.SportTypeID
+  	and
+  		tti.SportTypeID = #{1,jdbcType=CHAR}
+  	and
+  		TravelID=#{0,jdbcType=CHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from triptravelinfo
+    where TravelID = #{travelid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.TripTravelInfo" >
+    insert into triptravelinfo (TravelID, TravelName, SportTypeID, 
+      Attention, KeyWord, CreatTime, Guide,TravelPicture, Enabled
+      )
+    values (#{travelid,jdbcType=CHAR}, #{travelname,jdbcType=VARCHAR}, #{sporttypeid,jdbcType=CHAR}, 
+      #{attention,jdbcType=VARCHAR}, #{keyword,jdbcType=CHAR}, #{creattime,jdbcType=TIMESTAMP}, #{guide,jdbcType=VARCHAR},#{travelpicture,jdbcType=VARCHAR}, #{enabled,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.TripTravelInfo" >
+    insert into triptravelinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="travelid != null" >
+        TravelID,
+      </if>
+      <if test="travelname != null" >
+        TravelName,
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID,
+      </if>
+      <if test="attention != null" >
+        Attention,
+      </if>
+       <if test="keyword != null" >
+        KeyWord,
+      </if>
+      <if test="guide != null" >
+        Guide,
+      </if>
+      <if test="travelpicture != null" >
+        TravelPicture,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="travelid != null" >
+        #{travelid,jdbcType=CHAR},
+      </if>
+      <if test="travelname != null" >
+        #{travelname,jdbcType=VARCHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="attention != null" >
+        #{attention,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=CHAR},
+      </if>
+      <if test="guide != null" >
+        #{guide,jdbcType=VARCHAR},
+      </if>
+       <if test="travelpicture != null" >
+        #{TravelPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.TripTravelInfo" >
+    update triptravelinfo
+    <set >
+      <if test="travelname != null" >
+        TravelName = #{travelname,jdbcType=VARCHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="attention != null" >
+        Attention = #{attention,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        KeyWord = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="guide != null" >
+        Guide = #{guide,jdbcType=VARCHAR},
+      </if>
+       <if test="travelpicture != null" >
+        Travelpicture = #{travelpicture,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+    </set>
+    where TravelID = #{travelid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.TripTravelInfo" >
+    update triptravelinfo
+    set TravelName = #{travelname,jdbcType=VARCHAR},
+      SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      Attention = #{attention,jdbcType=VARCHAR},
+      KeyWord = #{keyword,jdbcType=VARCHAR},
+      Guide = #{guide,jdbcType=VARCHAR},
+      TravelPicture = #{travelpicture,jdbcType=VARCHAR},
+      Enabled = #{enabled,jdbcType=CHAR}
+    where TravelID = #{travelid,jdbcType=CHAR}
+  </update>
+</mapper>

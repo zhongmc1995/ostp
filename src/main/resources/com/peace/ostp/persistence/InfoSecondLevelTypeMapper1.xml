@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.InfoSecondLevelTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.InfoSecondLevelType" >
+    <id column="SecondLevelInfoTypeID" property="secondlevelinfotypeid" jdbcType="CHAR" />
+    <result column="SecondLevelInfoTypeName" property="secondlevelinfotypename" jdbcType="VARCHAR" />
+    <result column="FirstLevelInfoTypeID" property="firstlevelinfotypeid" jdbcType="CHAR" />
+    <result column="Note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SecondLevelInfoTypeID, SecondLevelInfoTypeName, FirstLevelInfoTypeID, Note
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from infosecondleveltype
+    where SecondLevelInfoTypeID = #{secondlevelinfotypeid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from infosecondleveltype
+    where SecondLevelInfoTypeID = #{secondlevelinfotypeid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.InfoSecondLevelType" >
+    insert into infosecondleveltype (SecondLevelInfoTypeID, SecondLevelInfoTypeName, 
+      FirstLevelInfoTypeID, Note)
+    values (#{secondlevelinfotypeid,jdbcType=CHAR}, #{secondlevelinfotypename,jdbcType=VARCHAR}, 
+      #{firstlevelinfotypeid,jdbcType=CHAR}, #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.InfoSecondLevelType" >
+    insert into infosecondleveltype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="secondlevelinfotypeid != null" >
+        SecondLevelInfoTypeID,
+      </if>
+      <if test="secondlevelinfotypename != null" >
+        SecondLevelInfoTypeName,
+      </if>
+      <if test="firstlevelinfotypeid != null" >
+        FirstLevelInfoTypeID,
+      </if>
+      <if test="note != null" >
+        Note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="secondlevelinfotypeid != null" >
+        #{secondlevelinfotypeid,jdbcType=CHAR},
+      </if>
+      <if test="secondlevelinfotypename != null" >
+        #{secondlevelinfotypename,jdbcType=VARCHAR},
+      </if>
+      <if test="firstlevelinfotypeid != null" >
+        #{firstlevelinfotypeid,jdbcType=CHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.InfoSecondLevelType" >
+    update infosecondleveltype
+    <set >
+      <if test="secondlevelinfotypename != null" >
+        SecondLevelInfoTypeName = #{secondlevelinfotypename,jdbcType=VARCHAR},
+      </if>
+      <if test="firstlevelinfotypeid != null" >
+        FirstLevelInfoTypeID = #{firstlevelinfotypeid,jdbcType=CHAR},
+      </if>
+      <if test="note != null" >
+        Note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SecondLevelInfoTypeID = #{secondlevelinfotypeid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.InfoSecondLevelType" >
+    update infosecondleveltype
+    set SecondLevelInfoTypeName = #{secondlevelinfotypename,jdbcType=VARCHAR},
+      FirstLevelInfoTypeID = #{firstlevelinfotypeid,jdbcType=CHAR},
+      Note = #{note,jdbcType=VARCHAR}
+    where SecondLevelInfoTypeID = #{secondlevelinfotypeid,jdbcType=CHAR}
+  </update>
+  <select id="getSecondLevelTypeByFirstID" parameterType="java.lang.String" resultType="java.util.HashMap">
+  	SELECT
+  		SecondLevelInfoTypeID,SecondLevelInfoTypeName 
+	FROM
+		infosecondleveltype second,infofirstleveltype first
+	WHERE
+		second.FirstLevelInfoTypeID=first.FirstLevelInfoTypeID
+	AND first.FirstLevelInfoTypeID = #{firstLevelTypeID,jdbcType=CHAR}
+  </select>
+</mapper>

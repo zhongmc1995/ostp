@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.BasicEquipTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.BasicEquipType" >
+    <id column="EquipTypeID" property="equiptypeid" jdbcType="CHAR" />
+    <result column="EquipTypeName" property="equiptypename" jdbcType="VARCHAR" />
+    <result column="Note" property="note" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    EquipTypeID, EquipTypeName, Note, create_by, create_date, update_by, update_date
+  </sql>
+  
+  <!-- 使用equiptypeid查询 -->
+  <select id="selectEquipType" resultType="java.lang.String" parameterType="java.lang.String">
+  	select EquipTypeName
+  	from basicequiptype
+  	where EquipTypeID = #{equiptypeid}
+  </select>
+  
+  <!-- 查找所有装备类型 -->
+  <select id="getAllEquipType" resultMap="BaseResultMap">
+  	  select 
+    <include refid="Base_Column_List" />
+    from basicequiptype
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from basicequiptype
+    where EquipTypeID = #{equiptypeid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from basicequiptype
+    where EquipTypeID = #{equiptypeid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.BasicEquipType" >
+    insert into basicequiptype (EquipTypeID, EquipTypeName, Note, 
+      create_by, create_date, update_by, 
+      update_date)
+    values (#{equiptypeid,jdbcType=CHAR}, #{equiptypename,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.BasicEquipType" >
+    insert into basicequiptype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="equiptypeid != null" >
+        EquipTypeID,
+      </if>
+      <if test="equiptypename != null" >
+        EquipTypeName,
+      </if>
+      <if test="note != null" >
+        Note,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="equiptypeid != null" >
+        #{equiptypeid,jdbcType=CHAR},
+      </if>
+      <if test="equiptypename != null" >
+        #{equiptypename,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.BasicEquipType" >
+    update basicequiptype
+    <set >
+      <if test="equiptypename != null" >
+        EquipTypeName = #{equiptypename,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        Note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where EquipTypeID = #{equiptypeid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.BasicEquipType" >
+    update basicequiptype
+    set EquipTypeName = #{equiptypename,jdbcType=VARCHAR},
+      Note = #{note,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where EquipTypeID = #{equiptypeid,jdbcType=CHAR}
+  </update>
+</mapper>

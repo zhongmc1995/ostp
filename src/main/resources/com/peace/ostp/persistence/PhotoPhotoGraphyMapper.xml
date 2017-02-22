@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.PhotoPhotoGraphyMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.PhotoPhotoGraphy" >
+    <id column="PictureID" property="pictureid" jdbcType="CHAR" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+    <result column="Author" property="author" jdbcType="VARCHAR" />
+    <result column="PublishTime" property="publishtime" jdbcType="VARCHAR" />
+    <result column="Origin" property="origin" jdbcType="VARCHAR" />
+    <result column="SportTypeID" property="sporttypeid" jdbcType="CHAR" />
+    <result column="StyleTypeID" property="styletypeid" jdbcType="CHAR" />
+    <result column="LevelType" property="leveltype" jdbcType="CHAR" />
+    <result column="PhotoParam" property="photoparam" jdbcType="VARCHAR" />
+    <result column="Introduction" property="introduction" jdbcType="VARCHAR" />
+    <result column="CurrentLikeTimes" property="currentliketimes" jdbcType="CHAR" />
+    <result column="TotalLikeTimes" property="totalliketimes" jdbcType="CHAR" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+    <result column="PhotoUrl" property="photourl" jdbcType="VARCHAR" />
+    <result column="ThumbPhotography" property="thumbphotography" jdbcType="VARCHAR" />
+    <association property="basicSportType" javaType="com.peace.ostp.domain.BasicSportType">
+    	<id column="SportTypeID" property="sporttypeid"/>
+    	<result column="SportTypeName" property="sporttypename" />
+    	<result column="Note" property="note" />
+    </association>
+    <association property="basicPhotoStyle" javaType="com.peace.ostp.domain.BasicPhotoStyle" >
+    	<id column="PhotoStyleID" property="photostyleid" jdbcType="CHAR" />
+    	<result column="PhotoStyleName" property="photostylename" jdbcType="VARCHAR" />
+    	<result column="Note" property="note" jdbcType="VARCHAR" />
+    	<result column="Enabled" property="enabled" jdbcType="CHAR" />
+  	</association>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    PictureID, Title, Author, PublishTime, Origin, photophotography.SportTypeID,  photophotography.StyleTypeID, LevelType, 
+    PhotoParam, Introduction, CurrentLikeTimes, TotalLikeTimes, photophotography.Enabled,PhotoUrl,ThumbPhotography
+  </sql>
+  
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.PhotoPhotoGraphy" >
+    insert into photophotography
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pictureid != null" >
+        PictureID,
+      </if>
+      <if test="title != null" >
+        Title,
+      </if>
+      <if test="author != null" >
+        Author,
+      </if>
+      <if test="publishtime != null" >
+        PublishTime,
+      </if>
+      <if test="origin != null" >
+        Origin,
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID,
+      </if>
+      <if test="styletypeid != null" >
+        StyleTypeID,
+      </if>
+      <if test="leveltype != null" >
+        LevelType,
+      </if>
+      <if test="photoparam != null" >
+        PhotoParam,
+      </if>
+      <if test="introduction != null" >
+        Introduction,
+      </if>
+      <if test="currentliketimes != null" >
+        CurrentLikeTimes,
+      </if>
+      <if test="totalliketimes != null" >
+        TotalLikeTimes,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+      <if test="photourl != null" >
+        PhotoUrl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pictureid != null" >
+        #{pictureid,jdbcType=CHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null" >
+        #{publishtime,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null" >
+        #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="styletypeid != null" >
+        #{styletypeid,jdbcType=CHAR},
+      </if>
+      <if test="leveltype != null" >
+        #{leveltype,jdbcType=CHAR},
+      </if>
+      <if test="photoparam != null" >
+        #{photoparam,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="currentliketimes != null" >
+        #{currentliketimes,jdbcType=CHAR},
+      </if>
+      <if test="totalliketimes != null" >
+        #{totalliketimes,jdbcType=CHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+      <if test="thumbphotography != null" >
+        #{thumbphotography,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+   <insert id="insert" parameterType="com.peace.ostp.domain.PhotoPhotoGraphy" >
+    insert into photophotography (PictureID, Title, Author, 
+      PublishTime, Origin, SportTypeID, 
+      StyleTypeID, LevelType, PhotoParam, 
+      Introduction, CurrentLikeTimes, TotalLikeTimes, 
+      Enabled,PhotoUrl,ThumbPhotography)
+    values (#{pictureid,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{publishtime,jdbcType=VARCHAR}, #{origin,jdbcType=VARCHAR}, #{sporttypeid,jdbcType=CHAR}, 
+      #{styletypeid,jdbcType=CHAR}, #{leveltype,jdbcType=CHAR}, #{photoparam,jdbcType=VARCHAR}, 
+      #{introduction,jdbcType=VARCHAR}, #{currentliketimes,jdbcType=CHAR}, #{totalliketimes,jdbcType=CHAR}, 
+      #{enabled,jdbcType=CHAR},#{photourl,jdbcType=VARCHAR},#{thumbphotography,jdbcType=VARCHAR})
+  </insert>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from photophotography
+    where PictureID = #{pictureid,jdbcType=CHAR}
+  </delete>
+  
+   <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.PhotoPhotoGraphy" >
+    update photophotography
+    <set >
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        Author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null" >
+        PublishTime = #{publishtime,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null" >
+        Origin = #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="styletypeid != null" >
+        StyleTypeID = #{styletypeid,jdbcType=CHAR},
+      </if>
+      <if test="leveltype != null" >
+        LevelType = #{leveltype,jdbcType=CHAR},
+      </if>
+      <if test="photoparam != null" >
+        PhotoParam = #{photoparam,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        Introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="currentliketimes != null" >
+        CurrentLikeTimes = #{currentliketimes,jdbcType=CHAR},
+      </if>
+      <if test="totalliketimes != null" >
+        TotalLikeTimes = #{totalliketimes,jdbcType=CHAR},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+      <if test="photourl != null" >
+        PhotoUrl=#{photourl,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbphotography != null" >
+        ThumbPhotography=#{thumbphotography,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PictureID = #{pictureid,jdbcType=CHAR}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.PhotoPhotoGraphy" >
+    update photophotography
+    set Title = #{title,jdbcType=VARCHAR},
+      Author = #{author,jdbcType=VARCHAR},
+      PublishTime = #{publishtime,jdbcType=VARCHAR},
+      Origin = #{origin,jdbcType=VARCHAR},
+      SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      StyleTypeID = #{styletypeid,jdbcType=CHAR},
+      LevelType = #{leveltype,jdbcType=CHAR},
+      PhotoParam = #{photoparam,jdbcType=VARCHAR},
+      Introduction = #{introduction,jdbcType=VARCHAR},
+      CurrentLikeTimes = #{currentliketimes,jdbcType=CHAR},
+      TotalLikeTimes = #{totalliketimes,jdbcType=CHAR},
+      Enabled = #{enabled,jdbcType=CHAR},
+      PhotoUrl=#{photourl,jdbcType=VARCHAR}
+    where PictureID = #{pictureid,jdbcType=CHAR}
+  </update>
+  
+  <select id="selectPhotographyherf" parameterType="java.lang.String" resultMap="BaseResultMap" >
+  	select
+  	<include refid="Base_Column_List"/>
+  	,SportTypeName,PhotoStyleName
+  	from photophotography ,basicsporttype bst,basicphotostyle bps
+  	where 1=1 
+  		and bst.SportTypeID = photophotography.SportTypeID
+  		and bps.PhotoStyleID = photophotography.StyleTypeID
+  	and
+  		PictureID = #{0,jdbcType=CHAR}
+  	and
+  		photophotography.StyleTypeID = #{1,jdbcType=CHAR}
+  	and
+  		photophotography.SportTypeID = #{2,jdbcType=CHAR}
+  </select>
+  
+  <select id="selectPhotoGraphy" resultMap="BaseResultMap" >
+  	select
+  	<include refid="Base_Column_List"/>
+  	,SportTypeName,PhotoStyleName
+  	<!--   Title, Author, 
+      PublishTime, Origin, SportTypeID, 
+      StyleTypeID, LevelType, PhotoParam, 
+      Introduction, CurrentLikeTimes, TotalLikeTimes, 
+      Enabled,PhotoUrl -->
+  	from photophotography ,basicsporttype bst,basicphotostyle bps
+  	where 1=1 
+  		and bst.SportTypeID = photophotography.SportTypeID
+  		and bps.PhotoStyleID = photophotography.StyleTypeID
+  	<if test="photophotoGraphy.title !=null and photophotoGraphy.title !='' ">and Title LIKE concat('%',#{photophotoGraphy.title},'%')</if>
+  	<if test="photophotoGraphy.author !=null and photophotoGraphy.author !='' ">and Author LIKE concat('%',#{photophotoGraphy.author},'%') </if>
+  	<if test="photophotoGraphy.begintime !=null and photophotoGraphy.begintime !='' and photophotoGraphy.endtime !=null and photophotoGraphy.endtime !=''">
+  		and PublishTime between #{photophotoGraphy.begintime} and #{photophotoGraphy.endtime}</if>
+  	<!-- <if test="photophotoGraphy.endtime !=null and photophotoGraphy.endtime !=''" >and PublishTime &lt;= #{photophotoGraphy.endtime}</if> -->
+  	<if test="photophotoGraphy.sporttypeid !=null and photophotoGraphy.sporttypeid !=''" >and photophotography.SportTypeID=#{photophotoGraphy.sporttypeid}</if>
+  	<if test="photophotoGraphy.styletypeid !=null and photophotoGraphy.styletypeid !=''" >and photophotography.StyleTypeID=#{photophotoGraphy.styletypeid}</if>
+  	<if test="photophotoGraphy.minliketimes !=null and photophotoGraphy.minliketimes !=''" >and CurrentLikeTimes  &gt;= CONVERT(#{photophotoGraphy.minliketimes},SIGNED)</if>
+  	<if test="photophotoGraphy.maxliketimes !=null and photophotoGraphy.maxliketimes !=''" >and CurrentLikeTimes &lt;= CONVERT(#{photophotoGraphy.maxliketimes},SIGNED)</if>
+  	<if test="photophotoGraphy.tminliketimes !=null and photophotoGraphy.tminliketimes !=''" >and TotalLikeTimes &gt;= CONVERT(#{photophotoGraphy.tminliketimes},SIGNED)</if>
+  	<if test="photophotoGraphy.tmaxliketimes !=null and photophotoGraphy.tmaxliketimes !=''" >and TotalLikeTimes &lt;= CONVERT(#{photophotoGraphy.tmaxliketimes},SIGNED)</if>
+  	limit #{page.startIndex},#{page.pageSize}
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from photophotography
+    where PictureID = #{pictureid,jdbcType=CHAR}
+  </select>
+  <select id="selectTotalRecord" resultType="int">
+  	select COUNT(PictureID)
+  	from photophotography
+  	where 1=1
+  </select>
+  
+
+ 
+  
+ 
+</mapper>

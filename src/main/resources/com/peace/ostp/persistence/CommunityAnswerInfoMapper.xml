@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.CommunityAnswerInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.CommunityAnswerInfo" >
+    <id column="AnsID" property="ansid" jdbcType="INTEGER" />
+    <result column="AnsAuthor" property="ansauthor" jdbcType="VARCHAR" />
+    <result column="AnsTime" property="anstime" jdbcType="TIMESTAMP" />
+    <result column="AnsAttention" property="ansattention" jdbcType="VARCHAR" />
+    <result column="QuestionID" property="questionid" jdbcType="VARCHAR" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    AnsID, AnsAuthor, AnsTime, AnsAttention, QuestionID, Enabled
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from communityanswerinfo
+    where AnsID = #{ansid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from communityanswerinfo
+    where AnsID = #{ansid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.CommunityAnswerInfo" >
+    insert into communityanswerinfo (AnsID, AnsAuthor, AnsTime, 
+      AnsAttention, QuestionID, Enabled
+      )
+    values (#{ansid,jdbcType=INTEGER}, #{ansauthor,jdbcType=VARCHAR}, #{anstime,jdbcType=TIMESTAMP}, 
+      #{ansattention,jdbcType=VARCHAR}, #{questionid,jdbcType=VARCHAR}, #{enabled,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.CommunityAnswerInfo" >
+    insert into communityanswerinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ansid != null" >
+        AnsID,
+      </if>
+      <if test="ansauthor != null" >
+        AnsAuthor,
+      </if>
+      <if test="anstime != null" >
+        AnsTime,
+      </if>
+      <if test="ansattention != null" >
+        AnsAttention,
+      </if>
+      <if test="questionid != null" >
+        QuestionID,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ansid != null" >
+        #{ansid,jdbcType=INTEGER},
+      </if>
+      <if test="ansauthor != null" >
+        #{ansauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="anstime != null" >
+        #{anstime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ansattention != null" >
+        #{ansattention,jdbcType=VARCHAR},
+      </if>
+      <if test="questionid != null" >
+        #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.CommunityAnswerInfo" >
+    update communityanswerinfo
+    <set >
+      <if test="ansauthor != null" >
+        AnsAuthor = #{ansauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="anstime != null" >
+        AnsTime = #{anstime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ansattention != null" >
+        AnsAttention = #{ansattention,jdbcType=VARCHAR},
+      </if>
+      <if test="questionid != null" >
+        QuestionID = #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+    </set>
+    where AnsID = #{ansid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.CommunityAnswerInfo" >
+    update communityanswerinfo
+    set AnsAuthor = #{ansauthor,jdbcType=VARCHAR},
+      AnsTime = #{anstime,jdbcType=TIMESTAMP},
+      AnsAttention = #{ansattention,jdbcType=VARCHAR},
+      QuestionID = #{questionid,jdbcType=VARCHAR},
+      Enabled = #{enabled,jdbcType=CHAR}
+    where AnsID = #{ansid,jdbcType=INTEGER}
+  </update>
+</mapper>

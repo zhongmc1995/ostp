@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.CourseInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.CourseInfo" >
+    <id column="CourseID" property="courseid" jdbcType="CHAR" />
+    <result column="CourseTitle" property="coursetitle" jdbcType="VARCHAR" />
+    <result column="CourseAuthor" property="courseauthor" jdbcType="VARCHAR" />
+    <result column="UpdateTime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="Content" property="content" jdbcType="VARCHAR" />
+    <result column="CoverPicture" property="coverpicture" jdbcType="VARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="CreateBy" property="createby" jdbcType="VARCHAR" />
+    <result column="UpdateBy" property="updateby" jdbcType="CHAR" />
+    <result column="SportTypeID" property="sporttypeid" jdbcType="CHAR" />
+    <result column="ClickTimes" property="clicktimes" jdbcType="CHAR" />
+    <result column="Keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CourseID, CourseTitle, CourseAuthor, UpdateTime, Content, CoverPicture, SportTypeID,CreateTime, CreateBy,
+    UpdateBy,ClickTimes, Keywords, Enabled
+  </sql>
+  <select id="Counts" resultType="int" parameterType="java.util.Map">
+  	select count(CourseID) from courseinfo
+  	 <trim prefix="WHERE" prefixOverrides="AND|OR" suffixOverrides="AND|OR"> 
+	  	 <if test='sporttypeid != null and sporttypeid !=""' >
+	        SportTypeID=#{sporttypeid}
+	      </if>
+	      <if test='coursetitle != null and coursetitle !=""' >
+	         AND courseinfo.CourseTitle LIKE CONCAT(CONCAT('%', #{coursetitle}), '%')
+	      </if>
+	  </trim>
+  </select>
+  <select id="GetAllCourseInfo" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from courseinfo 
+	 <trim prefix="WHERE" prefixOverrides="AND|OR" suffixOverrides="AND|OR"> 
+	  	 <if test='sporttypeid != null and sporttypeid !=""' >
+	        SportTypeID=#{sporttypeid}
+	      </if>
+	      <if test='coursetitle != null and coursetitle !=""' >
+	       AND courseinfo.CourseTitle LIKE CONCAT(CONCAT('%', #{coursetitle}), '%')
+	      </if>
+	   </trim>
+  	 limit #{index},#{pageSize}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from courseinfo
+    where CourseID = #{courseid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from courseinfo
+    where CourseID = #{courseid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.CourseInfo" >
+    insert into courseinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="courseid != null" >
+        CourseID,
+      </if>
+      <if test="coursetitle != null" >
+        CourseTitle,
+      </if>
+      <if test="courseauthor != null" >
+        CourseAuthor,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime,
+      </if>
+      <if test="createby != null" >
+        CreateBy,
+      </if>
+      <if test="updateby != null" >
+        UpdateBy,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="coverpicture != null" >
+        CoverPicture,
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID,
+      </if>
+      <if test="clicktimes != null" >
+        ClickTimes,
+      </if>
+      <if test="keywords != null" >
+        Keywords,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="courseid != null" >
+        #{courseid,jdbcType=CHAR},
+      </if>
+      <if test="coursetitle != null" >
+        #{coursetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="courseauthor != null" >
+        #{courseauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>  
+      <if test="createby != null" >
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="updateby != null" >
+        #{updateby,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="coverpicture != null" >
+        #{coverpicture,jdbcType=VARCHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="clicktimes != null" >
+        #{clicktimes,jdbcType=CHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.CourseInfo" >
+    insert into courseinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="courseid != null" >
+        CourseID,
+      </if>
+      <if test="coursetitle != null" >
+        CourseTitle,
+      </if>
+      <if test="courseauthor != null" >
+        CourseAuthor,
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="coverpicture != null" >
+        coverpicture,
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID,
+      </if>
+      <if test="clicktimes != null" >
+        ClickTimes,
+      </if>
+      <if test="keywords != null" >
+        Keywords,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="courseid != null" >
+        #{courseid,jdbcType=CHAR},
+      </if>
+      <if test="coursetitle != null" >
+        #{coursetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="courseauthor != null" >
+        #{courseauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="coverpicture != null" >
+        #{coverpicture,jdbcType=VARCHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="clicktimes != null" >
+        #{clicktimes,jdbcType=CHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.CourseInfo" >
+    update courseinfo
+    <set >
+      <if test="coursetitle != null" >
+        CourseTitle = #{coursetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="courseauthor != null" >
+        CourseAuthor = #{courseauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        Content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="coverpicture != null" >
+        coverpicture = #{coverpicture,jdbcType=VARCHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="clicktimes != null" >
+        ClickTimes = #{clicktimes,jdbcType=CHAR},
+      </if>
+      <if test="keywords != null" >
+        Keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+    </set>
+    where CourseID = #{courseid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.CourseInfo" >
+    update courseinfo
+    set CourseTitle = #{coursetitle,jdbcType=VARCHAR},
+      CourseAuthor = #{courseauthor,jdbcType=VARCHAR},
+	  UpdateBy = #{updateby,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      Content = #{content,jdbcType=VARCHAR},
+      SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      ClickTimes = #{clicktimes,jdbcType=CHAR},
+      CoverPicture = #{coverpicture,jdbcType=VARCHAR},
+      Keywords = #{keywords,jdbcType=VARCHAR},
+      Enabled = #{enabled,jdbcType=CHAR}
+    where CourseID = #{courseid,jdbcType=CHAR}
+  </update>
+</mapper>

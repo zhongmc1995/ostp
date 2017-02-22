@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.User" >
+    <id column="UserID" property="userid" jdbcType="VARCHAR" />
+    <result column="UserName" property="username" jdbcType="VARCHAR" />
+    <result column="UserSex" property="usersex" jdbcType="CHAR" />
+    <result column="UserEmail" property="useremail" jdbcType="VARCHAR" />
+    <result column="UserPhone" property="userphone" jdbcType="VARCHAR" />
+    <result column="UserAuthority" property="userauthority" jdbcType="VARCHAR" />
+    <result column="UserDesc" property="userdesc" jdbcType="VARCHAR" />
+    <result column="UserPsw" property="userpsw" jdbcType="CHAR" />
+    <result column="UserHobby" property="userhobby" jdbcType="VARCHAR" />
+    <result column="UserJob" property="userjob" jdbcType="VARCHAR" />
+    <result column="UserEdu" property="useredu" jdbcType="VARCHAR" />
+    <result column="UserTag" property="usertag" jdbcType="VARCHAR" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    UserID, UserName, UserSex, UserEmail, UserPhone, UserAuthority, UserDesc, UserPsw, 
+    UserHobby, UserJob, UserEdu, UserTag, Enabled
+  </sql>
+  
+    <resultMap id="RoleResultMap" type="com.peace.ostp.domain.Role" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="authority" property="authority" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Role_Column_List" >
+    id, authority, name, code
+  </sql>
+  
+  <select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where UserID = #{userid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getUserByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where UserName = #{username,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getRoleListByUserId" resultMap="RoleResultMap" parameterType="java.lang.String" >
+  		select c.* from
+		user a,userrole b,role c
+		where a.UserID=b.UserID and
+		b.RoleID=c.id and a.UserID=#{userid}
+		order by c.name
+  </select>
+  
+   <select id="getPageRecord" resultMap="BaseResultMap" parameterType="com.peace.ostp.util.Page">
+  		select 
+  		<include refid="Base_Column_List" />
+  		from user limit #{params.startIndex},#{pageSize}
+  </select>
+  <select id="getTotalRecord" resultType="int">
+  		select COUNT(*) from user
+  </select>
+  <select id="getAllUser" resultMap="BaseResultMap">
+  	select * from user;
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user
+    where UserID = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.User" >
+    insert into user (UserID, UserName, UserSex, 
+      UserEmail, UserPhone, UserAuthority, 
+      UserDesc, UserPsw, UserHobby, 
+      UserJob, UserEdu, UserTag, 
+      Enabled)
+    values (#{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{usersex,jdbcType=VARCHAR}, 
+      #{useremail,jdbcType=VARCHAR}, #{userphone,jdbcType=VARCHAR}, #{userauthority,jdbcType=VARCHAR}, 
+      #{userdesc,jdbcType=VARCHAR}, #{userpsw,jdbcType=VARCHAR}, #{userhobby,jdbcType=VARCHAR}, 
+      #{userjob,jdbcType=VARCHAR}, #{useredu,jdbcType=VARCHAR}, #{usertag,jdbcType=VARCHAR}, 
+      #{enabled,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        UserID,
+      </if>
+      <if test="username != null" >
+        UserName,
+      </if>
+      <if test="usersex != null" >
+        UserSex,
+      </if>
+      <if test="useremail != null" >
+        UserEmail,
+      </if>
+      <if test="userphone != null" >
+        UserPhone,
+      </if>
+      <if test="userauthority != null" >
+        UserAuthority,
+      </if>
+      <if test="userdesc != null" >
+        UserDesc,
+      </if>
+      <if test="userpsw != null" >
+        UserPsw,
+      </if>
+      <if test="userhobby != null" >
+        UserHobby,
+      </if>
+      <if test="userjob != null" >
+        UserJob,
+      </if>
+      <if test="useredu != null" >
+        UserEdu,
+      </if>
+      <if test="usertag != null" >
+        UserTag,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="usersex != null" >
+        #{usersex,jdbcType=VARCHAR},
+      </if>
+      <if test="useremail != null" >
+        #{useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null" >
+        #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="userauthority != null" >
+        #{userauthority,jdbcType=VARCHAR},
+      </if>
+      <if test="userdesc != null" >
+        #{userdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="userpsw != null" >
+        #{userpsw,jdbcType=VARCHAR},
+      </if>
+      <if test="userhobby != null" >
+        #{userhobby,jdbcType=VARCHAR},
+      </if>
+      <if test="userjob != null" >
+        #{userjob,jdbcType=VARCHAR},
+      </if>
+      <if test="useredu != null" >
+        #{useredu,jdbcType=VARCHAR},
+      </if>
+      <if test="usertag != null" >
+        #{usertag,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.User" >
+    update user
+    <set >
+      <if test="username != null" >
+        UserName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="usersex != null" >
+        UserSex = #{usersex,jdbcType=VARCHAR},
+      </if>
+      <if test="useremail != null" >
+        UserEmail = #{useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null" >
+        UserPhone = #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="userauthority != null" >
+        UserAuthority = #{userauthority,jdbcType=VARCHAR},
+      </if>
+      <if test="userdesc != null" >
+        UserDesc = #{userdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="userpsw != null" >
+        UserPsw = #{userpsw,jdbcType=VARCHAR},
+      </if>
+      <if test="userhobby != null" >
+        UserHobby = #{userhobby,jdbcType=VARCHAR},
+      </if>
+      <if test="userjob != null" >
+        UserJob = #{userjob,jdbcType=VARCHAR},
+      </if>
+      <if test="useredu != null" >
+        UserEdu = #{useredu,jdbcType=VARCHAR},
+      </if>
+      <if test="usertag != null" >
+        UserTag = #{usertag,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+    </set>
+    where UserID = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.User" >
+    update user
+    set UserName = #{username,jdbcType=VARCHAR},
+      UserSex = #{usersex,jdbcType=VARCHAR},
+      UserEmail = #{useremail,jdbcType=VARCHAR},
+      UserPhone = #{userphone,jdbcType=VARCHAR},
+      UserAuthority = #{userauthority,jdbcType=VARCHAR},
+      UserDesc = #{userdesc,jdbcType=VARCHAR},
+      <if test="userpsw != null" >
+        UserPsw = #{userpsw,jdbcType=VARCHAR},
+      </if>
+      UserHobby = #{userhobby,jdbcType=VARCHAR},
+      UserJob = #{userjob,jdbcType=VARCHAR},
+      UserEdu = #{useredu,jdbcType=VARCHAR},
+      UserTag = #{usertag,jdbcType=VARCHAR},
+      Enabled = #{enabled,jdbcType=CHAR}
+    where UserID = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updatePsw" parameterType="java.lang.String" >
+    update user
+    set UserPsw = #{userpsw,jdbcType=VARCHAR}
+    where UserID = #{userid,jdbcType=VARCHAR}
+  </update>
+ 
+</mapper>

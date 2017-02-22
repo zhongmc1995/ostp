@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.EquipMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.Equip" >
+    <id column="EquipID" property="equipid" jdbcType="CHAR" />
+    <result column="EquipName" property="equipname" jdbcType="VARCHAR" />
+    <result column="EquipPrice" property="equipprice" jdbcType="VARCHAR" />
+    <result column="EquipParam" property="equipparam" jdbcType="VARCHAR" />
+    <result column="EquipRecommend" property="equiprecommend" jdbcType="CHAR" />
+    <result column="SportTypeID" property="sporttypeid" jdbcType="CHAR" />
+    <result column="EquipTypeID" property="equiptypeid" jdbcType="CHAR" />
+    <result column="Note" property="note" jdbcType="VARCHAR" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+    <result column="UpdateDate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="UpdateBy" property="updateby" jdbcType="VARCHAR" />
+    <result column="CreateBy" property="createby" jdbcType="VARCHAR" />
+    <result column="EquipImage" property="equipimage" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    EquipID, EquipName, EquipPrice, EquipParam, EquipRecommend, SportTypeID, EquipTypeID, 
+    Note, Enabled, UpdateDate, CreateDate, UpdateBy, CreateBy,EquipImage
+  </sql>
+  
+  <!-- 依据主键查询 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from equip
+    where EquipID = #{equipid,jdbcType=CHAR}
+  </select>
+  
+  <!-- 查询全部equip -->
+  <select id="selectAllEquip" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+  	select <include refid="Base_Column_List" />
+    from equip
+   	where EquipTypeID = EquipTypeID
+	<if test='equiptypeid != null and equiptypeid != ""' >
+        and EquipTypeID = #{equiptypeid}
+    </if>
+	<if test='sporttypeid != null and sporttypeid != ""' >
+		and SportTypeID = #{sporttypeid}
+	</if>
+	<if test='equipname != null and equipname != ""' >
+		and EquipName LIKE CONCAT(CONCAT('%', rtrim(#{equipname})), '%')
+	</if>
+    limit #{startNo},#{pageSize}
+  </select>
+  
+  
+  
+  <!-- 查询总数 -->
+  <select id="selectAllEquipCount" resultType="int">
+	select count(EquipID)
+	from equip
+	where EquipTypeID = EquipTypeID
+	<if test='equiptypeid != null and equiptypeid != ""' >
+        and EquipTypeID = #{equiptypeid}
+    </if>
+	<if test='sporttypeid != null and sporttypeid != ""' >
+		and SportTypeID = #{sporttypeid}
+	</if>
+	<if test='equipname != null and equipname != ""' >
+		and EquipName LIKE CONCAT(CONCAT('%', #{equipname}), '%')
+	</if>
+  </select>
+  
+  <!-- 主键删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from equip
+    where EquipID = #{equipid,jdbcType=CHAR}
+  </delete>
+  
+  <!-- 插入 -->
+  <insert id="insert" parameterType="com.peace.ostp.domain.Equip" >
+    insert into equip (EquipID, EquipName, EquipPrice, 
+      EquipParam, EquipRecommend, SportTypeID, 
+      EquipTypeID, Note, Enabled, 
+      CreateDate, CreateBy,EquipImage,UpdateDate,UpdateBy)
+    values (#{equipid,jdbcType=CHAR}, #{equipname,jdbcType=VARCHAR}, #{equipprice,jdbcType=VARCHAR}, 
+      #{equipparam,jdbcType=VARCHAR}, #{equiprecommend,jdbcType=BIT}, #{sporttypeid,jdbcType=CHAR}, 
+      #{equiptypeid,jdbcType=CHAR}, #{note,jdbcType=VARCHAR}, #{enabled,jdbcType=CHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{createby,jdbcType=VARCHAR}, #{equipimage,jdbcType=VARCHAR},
+      #{updatedate,jdbcType=TIMESTAMP},#{updateby,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <!-- 主键更新 -->
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.Equip" >
+    update equip
+    set EquipName = #{equipname,jdbcType=VARCHAR},
+      EquipPrice = #{equipprice,jdbcType=VARCHAR},
+      EquipParam = #{equipparam,jdbcType=VARCHAR},
+      EquipRecommend = #{equiprecommend,jdbcType=BIT},
+      SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      EquipTypeID = #{equiptypeid,jdbcType=CHAR},
+      Note = #{note,jdbcType=VARCHAR},
+      Enabled = #{enabled,jdbcType=CHAR},
+      UpdateDate = #{updatedate,jdbcType=TIMESTAMP},
+      UpdateBy = #{updateby,jdbcType=VARCHAR},
+      EquipImage = #{equipimage,jdbcType=VARCHAR}
+    where EquipID = #{equipid,jdbcType=CHAR}
+  </update>
+</mapper>

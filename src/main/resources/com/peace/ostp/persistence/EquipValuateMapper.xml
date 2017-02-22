@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.EquipValuateMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.EquipValuate" >
+    <id column="EvaluteID" property="evaluteid" jdbcType="CHAR" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+    <result column="Author" property="author" jdbcType="VARCHAR" />
+    <result column="PublishTime" property="publishtime" jdbcType="VARCHAR" />
+    <result column="Origin" property="origin" jdbcType="VARCHAR" />
+    <result column="EquipID" property="equipid" jdbcType="CHAR" />
+    <result column="Content" property="content" jdbcType="VARCHAR" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    EvaluteID, Title, Author, PublishTime, Origin, EquipID, Content, Enabled
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from equipevaluate
+    where EvaluteID = #{evaluteid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from equipevaluate
+    where EvaluteID = #{evaluteid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.EquipValuate" >
+    insert into equipevaluate (EvaluteID, Title, Author, 
+      PublishTime, Origin, EquipID, 
+      Content, Enabled)
+    values (#{evaluteid,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{publishtime,jdbcType=VARCHAR}, #{origin,jdbcType=VARCHAR}, #{equipid,jdbcType=CHAR}, 
+      #{content,jdbcType=VARCHAR}, #{enabled,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.EquipValuate" >
+    insert into equipevaluate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="evaluteid != null" >
+        EvaluteID,
+      </if>
+      <if test="title != null" >
+        Title,
+      </if>
+      <if test="author != null" >
+        Author,
+      </if>
+      <if test="publishtime != null" >
+        PublishTime,
+      </if>
+      <if test="origin != null" >
+        Origin,
+      </if>
+      <if test="equipid != null" >
+        EquipID,
+      </if>
+      <if test="content != null" >
+        Content,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="evaluteid != null" >
+        #{evaluteid,jdbcType=CHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null" >
+        #{publishtime,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null" >
+        #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="equipid != null" >
+        #{equipid,jdbcType=CHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.EquipValuate" >
+    update equipevaluate
+    <set >
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        Author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtime != null" >
+        PublishTime = #{publishtime,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null" >
+        Origin = #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="equipid != null" >
+        EquipID = #{equipid,jdbcType=CHAR},
+      </if>
+      <if test="content != null" >
+        Content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+    </set>
+    where EvaluteID = #{evaluteid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.EquipValuate" >
+    update equipevaluate
+    set Title = #{title,jdbcType=VARCHAR},
+      Author = #{author,jdbcType=VARCHAR},
+      PublishTime = #{publishtime,jdbcType=VARCHAR},
+      Origin = #{origin,jdbcType=VARCHAR},
+      EquipID = #{equipid,jdbcType=CHAR},
+      Content = #{content,jdbcType=VARCHAR},
+      Enabled = #{enabled,jdbcType=CHAR}
+    where EvaluteID = #{evaluteid,jdbcType=CHAR}
+  </update>
+</mapper>

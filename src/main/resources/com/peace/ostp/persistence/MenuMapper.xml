@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peace.ostp.persistence.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.Menu">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="menuName" jdbcType="VARCHAR" property="menuname" />
+    <result column="parentId" jdbcType="BIGINT" property="parentid" />
+    <result column="href" jdbcType="VARCHAR" property="href" />
+    <result column="menuClass" jdbcType="VARCHAR" property="menuclass" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="sequence" jdbcType="INTEGER" property="sequence" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, menuName, parentId, href, menuClass, icon, sequence
+  </sql>
+  
+  
+  <select id="getMenuById" parameterType="int" resultType="com.peace.ostp.domain.Menu">
+  	select <include refid="Base_Column_List" /> from menu where id = #{id}
+  </select>
+  
+  
+  <select id="getMenusByMenuId" parameterType="int" resultType="com.peace.ostp.domain.Menu">
+  	select <include refid="Base_Column_List" /> from menu where parentId = #{MenuId}
+  </select>
+
+  
+  
+  <select id="getAllMenu" parameterType="string" resultType="com.peace.ostp.domain.Menu">
+  	select <include refid="Base_Column_List" /> from menu order by id;
+  </select>
+  
+   <select id="getPageMenu" parameterType="java.util.Map" resultType="com.peace.ostp.domain.Menu">
+  	select <include refid="Base_Column_List" /> from menu order by id limit #{startIndex},#{pageSize};
+  </select>
+  
+  <select id="getTotalRecord" resultType="int">
+  	select  COUNT(id) FROM menu;
+  </select>
+  
+  <insert id="insertMenu" parameterType="com.peace.ostp.domain.Menu">
+  	insert into menu(menuName,parentId,href,menuClass,icon,sequence) values(#{menuname},#{parentid},#{href},#{menuclass},#{icon},#{sequence});
+  </insert>
+  
+  <update id="updateMenuChildrenids" parameterType="com.peace.ostp.domain.Menu">
+  	update menu set childrenIds = #{childrenids} where id = #{id}
+  </update>
+  
+   <update id="updateMenu" parameterType="com.peace.ostp.domain.Menu">
+  	update menu set menuName = #{menuname},parentId = #{parentid},href = #{href},
+  	menuClass = #{menuclass},icon = #{icon},sequence = #{sequence}
+  	where id = #{id}
+  </update>
+  
+  <delete id="deleteMenuById" parameterType="string">
+  	delete from menu where id = #{id}
+  </delete>
+</mapper>

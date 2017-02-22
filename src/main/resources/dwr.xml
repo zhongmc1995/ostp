@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">
+<!-- 通用dwr配置 -->
+<dwr>
+    <allow>
+        <!-- 建立JS对象，将目标对象的方法转换成JS对象的方法 -->
+        <create javascript="helloSrv" creator="new">
+            <param name="class" value="services.HelloServices"></param>
+        </create>
+        <!-- 从Spring中获取Java对象 -->
+        <create javascript="deptSrv" creator="spring">
+            <param name="beanName" value="deptServices"></param>
+            <!-- 禁止执行 -->
+            <exclude method="deleteDept" />
+        </create>
+        <create javascript="loginSrv" creator="spring">
+            <param name="beanName" value="loginSrv"></param>
+        </create>
+        <!-- 指定针对于特定对象的转换器 -->
+        <convert match="entity.*" converter="bean"></convert>
+        <convert match="java.lang.Throwable" converter="bean">
+            <param name="include" value="message"></param>
+        </convert>
+    </allow>
+</dwr>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peace.ostp.persistence.BasicSportMapper" >
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.BasicSport" >
+    <id column="SportID" property="sportid" jdbcType="CHAR" />
+    <result column="SportTypeID" property="sporttypeid" jdbcType="CHAR" />
+    <result column="SportName" property="sportname" jdbcType="VARCHAR" />
+    <result column="SportKeywords" property="sportkeywords" jdbcType="VARCHAR" />
+    <result column="SportNote" property="sportnote" jdbcType="VARCHAR" />
+    <result column="Enabled" property="enabled" jdbcType="CHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SportID, SportTypeID, SportName, SportKeywords, SportNote, Enabled, create_by, create_date, 
+    update_by, update_date
+  </sql>
+  <!-- 查找所有类型 -->
+  <select id="getAllSport" resultMap="BaseResultMap">
+  	  select 
+    basicsport.SportID,basicsport.SportTypeID,basicsporttype.SportTypeName,
+    basicsport.SportName,basicsport.SportKeywords,basicsport.SportNote,
+    basicsport.create_by,basicsport.create_date,basicsport.update_by,basicsport.update_date
+    from basicsport,basicsporttype
+    WHERE basicsport.SportTypeID=basicsporttype.SportTypeID
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from basicsport
+    where SportID = #{sportid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from basicsport
+    where SportID = #{sportid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peace.ostp.domain.BasicSport" >
+    insert into basicsport (SportID, SportTypeID, SportName, 
+      SportKeywords, SportNote, Enabled, 
+      create_by, create_date, update_by, 
+      update_date)
+    values (#{sportid,jdbcType=CHAR}, #{sporttypeid,jdbcType=CHAR}, #{sportname,jdbcType=VARCHAR}, 
+      #{sportkeywords,jdbcType=VARCHAR}, #{sportnote,jdbcType=VARCHAR}, #{enabled,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peace.ostp.domain.BasicSport" >
+    insert into basicsport
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sportid != null" >
+        SportID,
+      </if>
+      <if test="sporttypeid != null" >
+        SportTypeID,
+      </if>
+      <if test="sportname != null" >
+        SportName,
+      </if>
+      <if test="sportkeywords != null" >
+        SportKeywords,
+      </if>
+      <if test="sportnote != null" >
+        SportNote,
+      </if>
+      <if test="enabled != null" >
+        Enabled,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sportid != null" >
+        #{sportid,jdbcType=CHAR},
+      </if>
+      <if test="sporttypeid != null" >
+        #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="sportname != null" >
+        #{sportname,jdbcType=VARCHAR},
+      </if>
+      <if test="sportkeywords != null" >
+        #{sportkeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="sportnote != null" >
+        #{sportnote,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peace.ostp.domain.BasicSport" >
+    update basicsport
+    <set >
+      <if test="sporttypeid != null" >
+        SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      </if>
+      <if test="sportname != null" >
+        SportName = #{sportname,jdbcType=VARCHAR},
+      </if>
+      <if test="sportkeywords != null" >
+        SportKeywords = #{sportkeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="sportnote != null" >
+        SportNote = #{sportnote,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        Enabled = #{enabled,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where SportID = #{sportid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peace.ostp.domain.BasicSport" >
+    update basicsport
+    set SportTypeID = #{sporttypeid,jdbcType=CHAR},
+      SportName = #{sportname,jdbcType=VARCHAR},
+      SportKeywords = #{sportkeywords,jdbcType=VARCHAR},
+      SportNote = #{sportnote,jdbcType=VARCHAR},
+      Enabled = #{enabled,jdbcType=CHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where SportID = #{sportid,jdbcType=CHAR}
+  </update>
+</mapper>

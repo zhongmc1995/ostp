@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peace.ostp.persistence.NavigationBarMapper">
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.NavigationBar">
+  	<id column="id" jdbcType="BIGINT" property="id" />
+  	<result column="menuName" jdbcType="VARCHAR" property="menuName" />
+    <result column="href" jdbcType="VARCHAR" property="href" />
+     <result column="sequence" jdbcType="VARCHAR" property="sequence" />
+  </resultMap>
+  
+  <select id="getAllNavigationBar" resultMap="BaseResultMap">
+      select * from navigationbar order by sequence asc
+  </select>
+  
+  <insert id="insert" parameterType="com.peace.ostp.domain.NavigationBar">
+      insert into navigationbar(menuName,href,sequence)
+      values(#{menuName},#{href},#{sequence})
+  </insert>
+ 	
+  <update id="update" parameterType="com.peace.ostp.domain.NavigationBar">
+      update navigationbar set menuName=#{menuName},href=#{href},sequence=#{sequence} 
+      where id=#{id}
+  </update>
+  <delete id="delete" parameterType="int">
+      delete from navigationbar where id=#{id}
+  </delete>
+</mapper>

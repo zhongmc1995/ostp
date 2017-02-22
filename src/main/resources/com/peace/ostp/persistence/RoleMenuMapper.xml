@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peace.ostp.persistence.RoleMenuMapper">
+  <resultMap id="BaseResultMap" type="com.peace.ostp.domain.RoleMenu">
+  	<id column="id" jdbcType="BIGINT" property="id" />
+    <id column="roleId" jdbcType="VARCHAR" property="roleid" />
+    <result column="menuId" jdbcType="BIGINT" property="menuid" />
+  </resultMap>
+  
+  <resultMap id="MenuResultMap" type="com.peace.ostp.domain.Menu">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="menuName" jdbcType="VARCHAR" property="menuname" />
+    <result column="parentId" jdbcType="BIGINT" property="parentid" />
+    <result column="href" jdbcType="VARCHAR" property="href" />
+    <result column="menuClass" jdbcType="VARCHAR" property="menuclass" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="sequence" jdbcType="INTEGER" property="sequence" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, roleId, menuId
+  </sql>
+  
+  
+  <select id="getMenusByRoleId" parameterType="java.lang.String" resultMap="MenuResultMap">
+  	select menu.id,menu.menuName,menu.parentId,menu.href,menu.menuClass,menu.icon,menu.sequence
+  	from rolemenu,menu where rolemenu.menuId = menu.id and roleId = #{RoleId}
+  </select>
+  
+  <insert id="insert" parameterType="com.peace.ostp.domain.RoleMenu">
+  	insert into rolemenu(roleId,menuId) value(#{roleid},#{menuid})
+  </insert>
+  
+  <delete id="deleteOneByMenuId" parameterType="int">
+  	delete from rolemenu where menuId = #{menuId}
+  </delete>
+  
+  <delete id="deleteByRoleId" parameterType="string">
+  	delete from rolemenu where roleId = #{roleId}
+  </delete>
+</mapper>
